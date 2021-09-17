@@ -1,6 +1,6 @@
 
 package Principal;
-import MenuPriincipal.MenuPrincipal;
+import MenuPriincipal.MenuPrincipalGui;
 public class Main {
 
     /**
@@ -8,7 +8,7 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) {
-        MenuPrincipal menu = new MenuPrincipal();
+        MenuPrincipalGui menu = new MenuPrincipalGui();
         menu.setVisible(true);
     }
     

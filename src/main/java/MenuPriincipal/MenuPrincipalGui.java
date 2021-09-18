@@ -5,8 +5,8 @@
  */
 package MenuPriincipal;
 
+import AnalizadorLexico.AnalizadorLexico;
 import javax.swing.JOptionPane;
-
 
 /**
  *
@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
  */
 public class MenuPrincipalGui extends javax.swing.JFrame {
 
-    MenuPrinciipalControlador menuControlador = new MenuPrinciipalControlador();
+    private MenuPrinciipalControlador menuControlador = new MenuPrinciipalControlador();
 
     /**
      * Constructor
@@ -96,6 +96,11 @@ public class MenuPrincipalGui extends javax.swing.JFrame {
         btnCOmenzarAnalisis.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         btnCOmenzarAnalisis.setText("Comenzar analisis");
         btnCOmenzarAnalisis.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnCOmenzarAnalisis.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCOmenzarAnalisisActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         jLabel2.setText("Fila:");
@@ -188,8 +193,10 @@ public class MenuPrincipalGui extends javax.swing.JFrame {
         menuControlador.buscarArchivo(txtEntrada);
     }//GEN-LAST:event_btnBuscarArchivoActionPerformed
     /**
-     * Este metodo se dispara cada que se hace un desplazamiento dentro del textarea
-     * @param evt 
+     * Este metodo se dispara cada que se hace un desplazamiento dentro del
+     * textarea
+     *
+     * @param evt
      */
     private void txtEntradaCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtEntradaCaretUpdate
         menuControlador.contarFilasYColumnas(labelFila, labelColumna, evt);
@@ -197,22 +204,32 @@ public class MenuPrincipalGui extends javax.swing.JFrame {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         String palabra = txtBuscar.getText();//obtenemos la palabra a buscar
-        if(!palabra.equals("")){//si la palabra n io esta vacia
+        if (!palabra.equals("")) {//si la palabra n io esta vacia
             menuControlador.buscarpalabra(txtEntrada, palabra);//la mndamos a buscar
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "No se a ingresado ninguna palabra a buscar");
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnGuardarCambiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarCambiosActionPerformed
         String textoDelTextArea = txtEntrada.getText();//obtenemos el texto del JTextArea
-        if(!textoDelTextArea.equals("")){//vemos que el texto no este vacio
+        if (!textoDelTextArea.equals("")) {//vemos que el texto no este vacio
             menuControlador.exportarTexto(textoDelTextArea);
-        }else{
-             JOptionPane.showMessageDialog(null, "El area de texto se encuentra vacio");
+        } else {
+            JOptionPane.showMessageDialog(null, "El area de texto se encuentra vacio");
         }
 
     }//GEN-LAST:event_btnGuardarCambiosActionPerformed
+
+    private void btnCOmenzarAnalisisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCOmenzarAnalisisActionPerformed
+        AnalizadorLexico analizador = new AnalizadorLexico();
+        String textoDelTextArea = txtEntrada.getText();//obtenemos el texto del JTextArea
+        if (!textoDelTextArea.equals("")) {//vemos que el texto no este vacio
+            analizador.comenzarAnalisis(textoDelTextArea);
+        } else {
+            JOptionPane.showMessageDialog(null, "El area de texto se encuentra vacio");
+        }
+    }//GEN-LAST:event_btnCOmenzarAnalisisActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;

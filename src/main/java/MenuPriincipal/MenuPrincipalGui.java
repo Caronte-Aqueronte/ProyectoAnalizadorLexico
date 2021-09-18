@@ -5,10 +5,8 @@
  */
 package MenuPriincipal;
 
-import java.io.File;
-import javax.swing.JFileChooser;
-import javax.swing.JTextArea;
-import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.JOptionPane;
+
 
 /**
  *
@@ -38,14 +36,14 @@ public class MenuPrincipalGui extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         txtEntrada = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtBuscar = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
         btnBuscarArchivo = new javax.swing.JButton();
         btnGuardarCambios = new javax.swing.JButton();
         btnCOmenzarAnalisis = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        labelFIla = new javax.swing.JLabel();
+        labelFila = new javax.swing.JLabel();
         labelColumna = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -66,11 +64,16 @@ public class MenuPrincipalGui extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         jLabel1.setText("Buscar palabra:");
 
-        jTextField1.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
+        txtBuscar.setFont(new java.awt.Font("Verdana", 0, 12)); // NOI18N
 
         btnBuscar.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         btnBuscar.setText("Buscar");
         btnBuscar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
 
         btnBuscarArchivo.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         btnBuscarArchivo.setText("Buscar archivo");
@@ -95,8 +98,8 @@ public class MenuPrincipalGui extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         jLabel3.setText("Columna:");
 
-        labelFIla.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-        labelFIla.setText("0");
+        labelFila.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        labelFila.setText("0");
 
         labelColumna.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         labelColumna.setText("0");
@@ -119,7 +122,7 @@ public class MenuPrincipalGui extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
                             .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -128,7 +131,7 @@ public class MenuPrincipalGui extends javax.swing.JFrame {
                             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelFIla, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(labelFila, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(labelColumna, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(597, Short.MAX_VALUE))
         );
@@ -139,14 +142,14 @@ public class MenuPrincipalGui extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 513, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelFIla, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(labelFila, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(1, 1, 1)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -177,33 +180,24 @@ public class MenuPrincipalGui extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBuscarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarArchivoActionPerformed
-        JFileChooser chooser = new JFileChooser();//creamos el nuevo objeto filechoooser
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos .txt", "txt");
-        chooser.setFileFilter(filter);//le damos el filtro al chooser
-        chooser.setDialogTitle("Seleccionar archivo");//le damos un titulo al dialog
-        chooser.setAcceptAllFileFilterUsed(false);//eliminamos la opcion "todos los archivos" del filechooser
-        if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-            File fichero = chooser.getSelectedFile();//decimos que el fichero sera igual al archivo elegido
-            menuControlador.cargarTextoATxtArea(txtEntrada, fichero);
-        }
+        menuControlador.buscarArchivo(txtEntrada);
     }//GEN-LAST:event_btnBuscarArchivoActionPerformed
-
+    /**
+     * Este metodo se dispara cada que se hace un desplazamiento dentro del textarea
+     * @param evt 
+     */
     private void txtEntradaCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtEntradaCaretUpdate
-        JTextArea textoSeleccionado = (JTextArea) evt.getSource();//obtener una referencia al JTextArea en el que se ha producido el evento
-        int linea;//valores iniciales
-        int columna;//
-        try {
-            int caretpos = textoSeleccionado.getCaretPosition();
-            linea = textoSeleccionado.getLineOfOffset(caretpos);
-            columna = caretpos - textoSeleccionado.getLineStartOffset(linea);
-
-            // Ya que las líneas las cuenta desde la 0
-            linea += 1;
-            labelFIla.setText(String.valueOf(linea));
-            labelColumna.setText(String.valueOf(columna));
-        } catch (Exception ex) {
-        }
+        menuControlador.contarFilasYColumnas(labelFila, labelColumna, evt);
     }//GEN-LAST:event_txtEntradaCaretUpdate
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        String palabra = txtBuscar.getText();
+        if(!palabra.equals("")){
+            menuControlador.buscarpalabra(txtEntrada, palabra);
+        }else{
+            JOptionPane.showMessageDialog(null, "No se a ingresado ninguna palabra a buscar");
+        }
+    }//GEN-LAST:event_btnBuscarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
@@ -215,9 +209,9 @@ public class MenuPrincipalGui extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel labelColumna;
-    private javax.swing.JLabel labelFIla;
+    private javax.swing.JLabel labelFila;
+    private javax.swing.JTextField txtBuscar;
     private javax.swing.JTextArea txtEntrada;
     // End of variables declaration//GEN-END:variables
 }

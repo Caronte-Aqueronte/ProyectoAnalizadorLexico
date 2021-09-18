@@ -67,8 +67,7 @@ public class MenuPrinciipalControlador {
                         //si son iguales entonces usamos el inicio de la palabra y y la x para marcar el texto en esa posicion
                         marcaTextos.addHighlight(inicioDePalabra, x, resaltadorVerde);
                     } catch (BadLocationException ex) {
-                        ex.printStackTrace();
-                    }                 
+                    }
                 }
                 palabraAComparar = "";//reiniciamos la paralbra referencia
                 inicioDePalabra = x + 1;//el inicio de otra palabra sera la pocision despues de un enter o espacio
@@ -79,10 +78,28 @@ public class MenuPrinciipalControlador {
                         try {
                             marcaTextos.addHighlight(inicioDePalabra, (x + 1), resaltadorVerde);
                         } catch (BadLocationException ex) {
-                            ex.printStackTrace();
-                        }                 
+                        }
                     }
                 }
+            }
+        }
+    }
+
+    public void exportarTexto(String textoAExportar) {
+        JFileChooser chooser = new JFileChooser();//creamos el chooser
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de texto", "txt");//este filtro muestra solo los .txt
+        chooser.setFileFilter(filter);//este metodo setea el filtro al chooser
+        chooser.setDialogTitle("Guardar archivo");//le damos titulo al dialog
+        chooser.setAcceptAllFileFilterUsed(false);//quitamos la opcion de mostrar todos los archivos
+        if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {//esperamos a que el chooser de una respuesta valida
+            String ruta = chooser.getSelectedFile().toString().concat(".txt");//seleccionamos la ruta que eligio el usuario le concatenamos el .txt
+            File archivoDeTexto = new File(ruta);//creamos un archivo con la ruta y nombre que le dio el usuario
+            try {
+                FileWriter exportador = new FileWriter(archivoDeTexto);//preparar el archivo que se exportara
+                exportador.write(textoAExportar);//le escribimos al archivo el texto que se quiere exportar     
+                exportador.close();
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
             }
         }
     }

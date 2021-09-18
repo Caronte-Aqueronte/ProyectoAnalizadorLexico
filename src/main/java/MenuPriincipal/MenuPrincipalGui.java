@@ -87,6 +87,11 @@ public class MenuPrincipalGui extends javax.swing.JFrame {
         btnGuardarCambios.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         btnGuardarCambios.setText("Guardar cambios");
         btnGuardarCambios.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnGuardarCambios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarCambiosActionPerformed(evt);
+            }
+        });
 
         btnCOmenzarAnalisis.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
         btnCOmenzarAnalisis.setText("Comenzar analisis");
@@ -191,13 +196,23 @@ public class MenuPrincipalGui extends javax.swing.JFrame {
     }//GEN-LAST:event_txtEntradaCaretUpdate
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        String palabra = txtBuscar.getText();
-        if(!palabra.equals("")){
-            menuControlador.buscarpalabra(txtEntrada, palabra);
+        String palabra = txtBuscar.getText();//obtenemos la palabra a buscar
+        if(!palabra.equals("")){//si la palabra n io esta vacia
+            menuControlador.buscarpalabra(txtEntrada, palabra);//la mndamos a buscar
         }else{
             JOptionPane.showMessageDialog(null, "No se a ingresado ninguna palabra a buscar");
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnGuardarCambiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarCambiosActionPerformed
+        String textoDelTextArea = txtEntrada.getText();//obtenemos el texto del JTextArea
+        if(!textoDelTextArea.equals("")){//vemos que el texto no este vacio
+            menuControlador.exportarTexto(textoDelTextArea);
+        }else{
+             JOptionPane.showMessageDialog(null, "El area de texto se encuentra vacio");
+        }
+
+    }//GEN-LAST:event_btnGuardarCambiosActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;

@@ -7,6 +7,7 @@ package MenuPriincipal;
 
 import java.io.File;
 import javax.swing.JFileChooser;
+import javax.swing.JTextArea;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -14,7 +15,9 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author Luis Monterroso
  */
 public class MenuPrincipalGui extends javax.swing.JFrame {
+
     MenuPrinciipalControlador menuControlador = new MenuPrinciipalControlador();
+
     /**
      * Constructor
      */
@@ -42,8 +45,8 @@ public class MenuPrincipalGui extends javax.swing.JFrame {
         btnCOmenzarAnalisis = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        labelFIla = new javax.swing.JLabel();
+        labelColumna = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -53,6 +56,11 @@ public class MenuPrincipalGui extends javax.swing.JFrame {
 
         txtEntrada.setColumns(20);
         txtEntrada.setRows(5);
+        txtEntrada.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                txtEntradaCaretUpdate(evt);
+            }
+        });
         jScrollPane1.setViewportView(txtEntrada);
 
         jLabel1.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
@@ -87,11 +95,11 @@ public class MenuPrincipalGui extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Verdana", 1, 14)); // NOI18N
         jLabel3.setText("Columna:");
 
-        jLabel4.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-        jLabel4.setText("0");
+        labelFIla.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        labelFIla.setText("0");
 
-        jLabel5.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
-        jLabel5.setText("0");
+        labelColumna.setFont(new java.awt.Font("Verdana", 0, 14)); // NOI18N
+        labelColumna.setText("0");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -120,8 +128,8 @@ public class MenuPrincipalGui extends javax.swing.JFrame {
                             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(labelFIla, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(labelColumna, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(597, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -138,11 +146,11 @@ public class MenuPrincipalGui extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(labelFIla, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(1, 1, 1)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(labelColumna, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGuardarCambios)
@@ -180,6 +188,23 @@ public class MenuPrincipalGui extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnBuscarArchivoActionPerformed
 
+    private void txtEntradaCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtEntradaCaretUpdate
+        JTextArea textoSeleccionado = (JTextArea) evt.getSource();//obtener una referencia al JTextArea en el que se ha producido el evento
+        int linea;//valores iniciales
+        int columna;//
+        try {
+            int caretpos = textoSeleccionado.getCaretPosition();
+            linea = textoSeleccionado.getLineOfOffset(caretpos);
+            columna = caretpos - textoSeleccionado.getLineStartOffset(linea);
+
+            // Ya que las líneas las cuenta desde la 0
+            linea += 1;
+            labelFIla.setText(String.valueOf(linea));
+            labelColumna.setText(String.valueOf(columna));
+        } catch (Exception ex) {
+        }
+    }//GEN-LAST:event_txtEntradaCaretUpdate
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnBuscarArchivo;
@@ -188,11 +213,11 @@ public class MenuPrincipalGui extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel labelColumna;
+    private javax.swing.JLabel labelFIla;
     private javax.swing.JTextArea txtEntrada;
     // End of variables declaration//GEN-END:variables
 }

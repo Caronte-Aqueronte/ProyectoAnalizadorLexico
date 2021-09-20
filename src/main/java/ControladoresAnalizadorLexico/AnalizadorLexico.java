@@ -81,6 +81,7 @@ public class AnalizadorLexico {
         //aqui acabamos de analizar todas las palabras del jtext generamos los reportes
         Reporte reportes = new Reporte(tablaErrores, tablaTokens, tablaRecuento, errores, tokens);
         reportes.cargarTablaErrores();
+        reportes.cargarTablaTokens();
         return trancisionesDelAutomata;
     }
 

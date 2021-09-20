@@ -53,7 +53,7 @@ public class Reporte {
         modelo.addColumn("Cadena de error");
         modelo.addColumn("Fila");
         modelo.addColumn("Columna");
-        //exploramos todas las materias primas, y creamos una fila a partir de los atributos del objeto
+        //exploramos todas os errores, y creamos una fila a partir de los atributos del objeto
         for (Error item : errores) {
             Object[] fila = new Object[3];
             fila[0] = item.getCadenaDeError();
@@ -63,43 +63,65 @@ public class Reporte {
         }
         tablaErrores.setModel(modelo);//una vez acabado el
     }
-    public void cargarTablaTokens(){
-        if(errores.isEmpty()){
-             DefaultTableModel modelo = setearModelo();
+
+    public void cargarTablaTokens() {
+        DefaultTableModel modelo = setearModelo();
         //anadir todas las columnas necesarias para la tabla
         modelo.addColumn("Tipo de token");
         modelo.addColumn("Lexema");
         modelo.addColumn("Fila");
         modelo.addColumn("Columna");
-        //exploramos todas las materias primas, y creamos una fila a partir de los atributos del objeto
-        for (Token item : tokens) {
-            Object[] fila = new Object[4];
-            fila[0] = item.getTipoDeToken();
-            fila[1] = item.getLexema();
-            fila[2] = item.getFila();
-            fila[3] = item.getColumna();
-            modelo.addRow(fila);//anadimos la nueva fila
-        }
         tablaTokens.setModel(modelo);//una vez acabado el
+        if (errores.isEmpty()) {
+            //exploramos todas los tokens, y creamos una fila a partir de los atributos del objeto
+            for (Token item : tokens) {
+                Object[] fila = new Object[4];
+                fila[0] = item.getTipoDeToken();
+                fila[1] = item.getLexema();
+                fila[2] = item.getFila();
+                fila[3] = item.getColumna();
+                modelo.addRow(fila);//anadimos la nueva fila
+            }
+            tablaTokens.setModel(modelo);//una vez acabado el
         }
     }
-    public void cargarTablaRecuento(){
-        if(errores.isEmpty()){
-             DefaultTableModel modelo = setearModelo();
+
+    public void cargarTablaRecuento() {
+        DefaultTableModel modelo = setearModelo();
         //anadir todas las columnas necesarias para la tabla
         modelo.addColumn("Lexema");
         modelo.addColumn("Token");
         modelo.addColumn("Veces que aparece");
-        //exploramos todas las materias primas, y creamos una fila a partir de los atributos del objeto
-        for (Token item : tokens) {
-            Object[] fila = new Object[4];
-            fila[0] = item.getTipoDeToken();
-            fila[1] = item.getLexema();
-            fila[2] = item.getFila();
-            fila[3] = item.getColumna();
-            modelo.addRow(fila);//anadimos la nueva fila
+        tablaRecuento.setModel(modelo);
+        if (errores.isEmpty()) {
+           ArrayList<Recuento> recuentos = hacerRecuentoDeLexemas();
+           //exploramos todas los tokens, y creamos una fila a partir de los atributos del objeto
+            for (Recuento item : recuentos) {
+                Object[] fila = new Object[3];
+                fila[0] = item.getLexema();
+                fila[1] = item.getToken();
+                fila[2] = item.getCantidadQueAparece();
+                modelo.addRow(fila);//anadimos la nueva fila
+            }
+            tablaRecuento.setModel(modelo);//una vez acabado el
         }
-        tablaTokens.setModel(modelo);//una vez acabado el
+    }
+    private ArrayList<Recuento> hacerRecuentoDeLexemas(){
+        ArrayList<Recuento> recuentos = new ArrayList<>();
+        boolean banderaLExemaExiste = false;
+        for(Token itemToken : tokens){
+            banderaLExemaExiste = false;
+            for(Recuento itemRecuento : recuentos){
+                if(itemRecuento.getLexema().equals(itemToken.getLexema())){//vemos si se trata del mismo lexema
+                    banderaLExemaExiste = true;
+                    int vecesQueAparece = itemRecuento.getCantidadQueAparece();
+                    itemRecuento.setCantidadQueAparece(vecesQueAparece + 1);
+                }
+            }
+            if(banderaLExemaExiste == false){
+                recuentos.add(new Recuento(itemToken.getLexema(),itemToken.getTipoDeToken(), 1));
+            }
         }
+        return recuentos;
     }
 }

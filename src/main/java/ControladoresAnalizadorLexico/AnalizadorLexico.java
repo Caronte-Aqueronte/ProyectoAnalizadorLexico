@@ -82,6 +82,7 @@ public class AnalizadorLexico {
         Reporte reportes = new Reporte(tablaErrores, tablaTokens, tablaRecuento, errores, tokens);
         reportes.cargarTablaErrores();
         reportes.cargarTablaTokens();
+        reportes.cargarTablaRecuento();
         return trancisionesDelAutomata;
     }
 

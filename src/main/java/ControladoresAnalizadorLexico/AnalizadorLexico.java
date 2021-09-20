@@ -1,12 +1,31 @@
-package AnalizadorLexico;
+package ControladoresAnalizadorLexico;
 
+import ControladoresDeReportes.Reporte;
 import java.util.ArrayList;
+import javax.swing.JTable;
 
 public class AnalizadorLexico {
+
+    private JTable tablaErrores;
+    private JTable tablaTokens;
+    private JTable tablaRecuento;
 
     private ArrayList<Error> errores = new ArrayList<>();
     private ArrayList<Token> tokens = new ArrayList<>();
     private ArrayList<String> trancisionesDelAutomata = new ArrayList<>();
+
+    /**
+     * Contrusctor inicializa las tablas que serviran para hacer los reportes
+     *
+     * @param tablaErrores
+     * @param tablaTokens
+     * @param tablaRecuento
+     */
+    public AnalizadorLexico(JTable tablaErrores, JTable tablaTokens, JTable tablaRecuento) {
+        this.tablaErrores = tablaErrores;
+        this.tablaTokens = tablaTokens;
+        this.tablaRecuento = tablaRecuento;
+    }
 
     public ArrayList<String> comenzarAnalisis(String textoAAnalizar) {
         //estos contadores serviran en caso haya error, se iran sumando
@@ -41,7 +60,7 @@ public class AnalizadorLexico {
                         tokens.add(new Token("Signo de agrupacion", palabraAAnalizar, fila, columna));
                         System.out.println("Signo de agrupacion");
                     } else {
-                        errores.add(new Error(textoAAnalizar, fila, columna));
+                        errores.add(new Error(palabraAAnalizar, fila, columna));
                     }
 
                 }
@@ -60,6 +79,8 @@ public class AnalizadorLexico {
             }
         }
         //aqui acabamos de analizar todas las palabras del jtext generamos los reportes
+        Reporte reportes = new Reporte(tablaErrores, tablaTokens, tablaRecuento, errores, tokens);
+        reportes.cargarTablaErrores();
         return trancisionesDelAutomata;
     }
 

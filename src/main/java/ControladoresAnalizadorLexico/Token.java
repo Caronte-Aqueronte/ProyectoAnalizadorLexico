@@ -1,5 +1,5 @@
 
-package AnalizadorLexico;
+package ControladoresAnalizadorLexico;
 
 public class Token {
     private String tipoDeToken;

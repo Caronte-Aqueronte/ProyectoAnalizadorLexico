@@ -5,7 +5,7 @@
  */
 package MenuPriincipal;
 
-import AnalizadorLexico.AnalizadorLexico;
+import ControladoresAnalizadorLexico.AnalizadorLexico;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -50,11 +50,11 @@ public class MenuPrincipalGui extends javax.swing.JFrame {
         txtTransicion = new javax.swing.JTextArea();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        tablaTOkens = new javax.swing.JTable();
+        tablaErroes = new javax.swing.JTable();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tablaTokens = new javax.swing.JTable();
         jScrollPane5 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        tablaRecuento = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -137,7 +137,7 @@ public class MenuPrincipalGui extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         jLabel4.setText("Transiciones del automata:");
 
-        tablaTOkens.setModel(new javax.swing.table.DefaultTableModel(
+        tablaErroes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
                 {},
@@ -148,9 +148,9 @@ public class MenuPrincipalGui extends javax.swing.JFrame {
 
             }
         ));
-        jScrollPane3.setViewportView(tablaTOkens);
+        jScrollPane3.setViewportView(tablaErroes);
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tablaTokens.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
                 {},
@@ -161,9 +161,9 @@ public class MenuPrincipalGui extends javax.swing.JFrame {
 
             }
         ));
-        jScrollPane4.setViewportView(jTable2);
+        jScrollPane4.setViewportView(tablaTokens);
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        tablaRecuento.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
                 {},
@@ -174,7 +174,7 @@ public class MenuPrincipalGui extends javax.swing.JFrame {
 
             }
         ));
-        jScrollPane5.setViewportView(jTable3);
+        jScrollPane5.setViewportView(tablaRecuento);
 
         jLabel5.setFont(new java.awt.Font("Verdana", 1, 18)); // NOI18N
         jLabel5.setText("Reporte de errores");
@@ -331,7 +331,7 @@ public class MenuPrincipalGui extends javax.swing.JFrame {
     }//GEN-LAST:event_btnGuardarCambiosActionPerformed
 
     private void btnCOmenzarAnalisisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCOmenzarAnalisisActionPerformed
-        AnalizadorLexico analizador = new AnalizadorLexico();
+        AnalizadorLexico analizador = new AnalizadorLexico(tablaErroes, tablaTokens, tablaRecuento);
         String textoDelTextArea = txtEntrada.getText();//obtenemos el texto del JTextArea
         txtTransicion.setText("");
         if (!textoDelTextArea.equals("")) { //vemos que el texto no este vacio
@@ -362,11 +362,11 @@ public class MenuPrincipalGui extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable3;
     private javax.swing.JLabel labelColumna;
     private javax.swing.JLabel labelFila;
-    private javax.swing.JTable tablaTOkens;
+    private javax.swing.JTable tablaErroes;
+    private javax.swing.JTable tablaRecuento;
+    private javax.swing.JTable tablaTokens;
     private javax.swing.JTextField txtBuscar;
     private javax.swing.JTextArea txtEntrada;
     private javax.swing.JTextArea txtTransicion;

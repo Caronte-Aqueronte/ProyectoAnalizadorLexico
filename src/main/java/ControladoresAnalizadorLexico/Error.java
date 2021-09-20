@@ -1,5 +1,5 @@
 
-package AnalizadorLexico;
+package ControladoresAnalizadorLexico;
 
 public class Error {
     private String cadenaDeError;

@@ -6,8 +6,9 @@ public class AnalizadorLexico {
 
     private ArrayList<Error> errores = new ArrayList<>();
     private ArrayList<Token> tokens = new ArrayList<>();
+    private ArrayList<String> trancisionesDelAutomata = new ArrayList<>();
 
-    public void comenzarAnalisis(String textoAAnalizar) {
+    public ArrayList<String> comenzarAnalisis(String textoAAnalizar) {
         //estos contadores serviran en caso haya error, se iran sumando
         int fila = 1;
         int columna = 0;
@@ -31,16 +32,16 @@ public class AnalizadorLexico {
                         tokens.add(new Token("Decimal", palabraAAnalizar, fila, columna));
                         System.out.println("Decimal");
                     } else if (verSiEsPuntuacion(palabraAAnalizar)) {
-                        tokens.add(new Token("Simbolo de puntuacion", palabraAAnalizar, fila, columna));
-                        System.out.println("Simbolo de puntuacion");
+                        tokens.add(new Token("Signo de puntuacion", palabraAAnalizar, fila, columna));
+                        System.out.println("signo de puntuacion");
                     } else if (verSiEsOperador(palabraAAnalizar)) {
                         tokens.add(new Token("Operador", palabraAAnalizar, fila, columna));
                         System.out.println("Operador");
                     } else if (verSiEsAgrupacion(palabraAAnalizar)) {
-                        tokens.add(new Token("Simbolo de agrupacion", palabraAAnalizar, fila, columna));
-                        System.out.println("Simbolo de agrupacion");
+                        tokens.add(new Token("Signo de agrupacion", palabraAAnalizar, fila, columna));
+                        System.out.println("Signo de agrupacion");
                     } else {
-                        System.out.println("Error");
+                        errores.add(new Error(textoAAnalizar, fila, columna));
                     }
 
                 }
@@ -58,10 +59,13 @@ public class AnalizadorLexico {
                 columna++;
             }
         }
-        //aqui acabamos de analizar todas las palabras del
+        //aqui acabamos de analizar todas las palabras del jtext generamos los reportes
+        return trancisionesDelAutomata;
     }
 
     public boolean verSiEsNumero(String palabraAAnalizar) {
+        ArrayList<String> transiciones = new ArrayList<>();//en este guardaremos todas las transiciones
+        transiciones.add("Con el texto " + palabraAAnalizar);//damos cabecera
         String estado = "s1";
         String estadoAux = "";
         char charEnPosicionX;//esta variable almacenara el char que estemos analizando en el for
@@ -71,9 +75,11 @@ public class AnalizadorLexico {
                 if (estado.equals("s1")) { //si estamos en el estado s1 y se trata de un numero etonces nos movemos al s4
                     estadoAux = estado;
                     estado = "s4";
-                    //agregamos la transicion                   
+                    //agregamos la transicion
+                    transiciones.add("Con el caracter " + palabraAAnalizar.charAt(x) + " me movi del estado " + estadoAux + " al estado " + estado);
                 } else if (estado.equals("s4")) {//si estamos en el s4 y se trata de un numero entonces nos movemos al s4  
                     estado = "s4";
+                    transiciones.add("Con el caracter " + palabraAAnalizar.charAt(x) + " me movi del estado " + estadoAux + " al estado " + estado);
                 }
             } else {//si no se trata de un caracter valido entonces invalidamos el estado y rompemos el for
                 estado = "no pertenece al alfabeto";
@@ -81,32 +87,45 @@ public class AnalizadorLexico {
             }
 
         }
-        //cuando acabamos de explorar la palabra y el estado es s4 entonces es un numero de lo contrario no
-        return (estado.equals("s4"));
+        if (estado.equals("s4")) {
+            transiciones.add("Me encuentro en mi estado de aceptacion s4. El texto: " + palabraAAnalizar + " es un numero");
+            trancisionesDelAutomata.addAll(0, transiciones);//le pasamos todas las transiciones generadas
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public boolean verSiEsIdentificador(String palabraAAnalizar) {
+        ArrayList<String> transiciones = new ArrayList<>();//en este guardaremos todas las transiciones
+        transiciones.add("Con el texto " + palabraAAnalizar);//damos cabecera
         String estado = "s1";
         String estadoAux = "";
         //vemos que el primer char sea una letra
         if ((palabraAAnalizar.charAt(0) >= 65 && palabraAAnalizar.charAt(0) <= 90) || (palabraAAnalizar.charAt(0) >= 97 && palabraAAnalizar.charAt(0) <= 122)) {
-            estado = "s3";//si entra entonces pasamos al estadp de acptacion
+            //no hacemos nada, solo verificamos el valor de verdad
         } else {
             return false;//si no esntonces no es un identificador
         }//si llega aqui entonces se cumplio el if y seguimos analizando
         for (int x = 0; x < palabraAAnalizar.length(); x++) {
             //verificamos que el caracter sea parte del alfaberto del automata
             if (verificarSiCaracterPerteneceAAlfabetoDeIdentificador(palabraAAnalizar.charAt(x))) {
-                estado = "s3";
+                estadoAux = estado;
+                estado = "s3";//si entra entonces pasamos al estadp de acptacion
+                transiciones.add("Con el caracter " + palabraAAnalizar.charAt(x) + " me movi del estado " + estadoAux + " al estado " + estado);
             } else {
                 return false;
             }
         }
         //una vez acabado el for entonces se encuentra en el s3 y es un identificador
+        transiciones.add("Me encuentro en el estado de aceptacion s3, el texto: " + palabraAAnalizar + " es un identificador");
+        trancisionesDelAutomata.addAll(0, transiciones);//le pasamos todas las transiciones generadas
         return true;
     }
 
     public boolean verSiEsDecimal(String palabraAAnalizar) {
+        ArrayList<String> transiciones = new ArrayList<>();//en este guardaremos todas las transiciones
+        transiciones.add("Con el texto " + palabraAAnalizar);//damos cabecera
         String estado = "s1";
         String estadoAux = "";
         int contadorDePuntoDecimal = 0;
@@ -124,20 +143,25 @@ public class AnalizadorLexico {
                 if (estado.equals("s1") && (charEnPosicionX >= 48 && charEnPosicionX <= 57)) {
                     estadoAux = estado;
                     estado = "s4";
+                    transiciones.add("Con el caracter " + palabraAAnalizar.charAt(x) + " me movi del estado " + estadoAux + " al estado " + estado);
                     //si estamos en el estado s4 y se trata de un numero etonces nos quedamos en el s4
                 } else if (estado.equals("s4") && (charEnPosicionX >= 48 && charEnPosicionX <= 57)) {
                     estado = "s4";
+                    transiciones.add("Con el caracter " + palabraAAnalizar.charAt(x) + " me movi del estado " + estadoAux + " al estado " + estado);
                     //si estamos en el s4 y se trata de un punto entonces nos movemos al s5
                 } else if (estado.equals("s4") && (charEnPosicionX == '.')) {
                     estadoAux = estado;
                     estado = "s5";
+                    transiciones.add("Con el caracter " + palabraAAnalizar.charAt(x) + " me movi del estado " + estadoAux + " al estado " + estado);
                     //si estamos en el estado s5 y se trata de un numero etonces nos movemos al s6    
                 } else if (estado.equals("s5") && (charEnPosicionX >= 48 && charEnPosicionX <= 57)) {
                     estadoAux = estado;
                     estado = "s6";
+                    transiciones.add("Con el caracter " + palabraAAnalizar.charAt(x) + " me movi del estado " + estadoAux + " al estado " + estado);
                     //si estamos en el estado s6 y se trata de un numero etonces nos quedamos en el s6
                 } else if (estado.equals("s6") && (charEnPosicionX >= 48 && charEnPosicionX <= 57)) {
                     estado = "s6";
+                    transiciones.add("Con el caracter " + palabraAAnalizar.charAt(x) + " me movi del estado " + estadoAux + " al estado " + estado);
                 }
                 if (charEnPosicionX == '.') {
                     contadorDePuntoDecimal++;
@@ -149,13 +173,21 @@ public class AnalizadorLexico {
         }
         if (contadorDePuntoDecimal == 1) {
             //cuando acabamos de explorar la palabra y el estado es s6 entonces es un decimal de lo contrario no
-            return (estado.equals("s6"));
+            if (estado.equals("s6")) {//vemos si el estado es el estado de aceptacion
+                transiciones.add("Me encuentro en mi estado de aceptacion s6. El texto: " + palabraAAnalizar + " es un Decimal");
+                trancisionesDelAutomata.addAll(0, transiciones);//le pasamos todas las transiciones generadas
+                return true;//si entra entonces devolvemos true
+            } else {//si no entonces devolvemos false
+                return false;
+            }
         } else {
             return false;
         }
     }
 
     public boolean verSiEsPuntuacion(String palabraAAnalizar) {
+        ArrayList<String> transiciones = new ArrayList<>();//en este guardaremos todas las transiciones
+        transiciones.add("Con el texto " + palabraAAnalizar);//damos cabecera
         String estado = "s1";
         String estadoAux = "";
         char charEnPosicionX;//esta variable almacenara el char que estemos analizando en el for
@@ -166,16 +198,24 @@ public class AnalizadorLexico {
             if (verificarSiCaracterPrteneceAAlfabetoDePuntuacion(charEnPosicionX)) {
                 estadoAux = estado;
                 estado = "s7";
-                //agregamos la transicion
+                transiciones.add("Con el caracter " + palabraAAnalizar.charAt(x) + " me movi del estado " + estadoAux + " al estado " + estado);
             }
         }
         if (contadorDeChars > 1) {//vamos que la palabra solo tenga 1 char
             return false;
         }
-        return (estado.equals("s7"));//mandamos el valor de verdad de esto
+        if (estado.equals("s7")) {//vemos si el estado es el estado de aceptacion
+            transiciones.add("Me encuentro en mi estado de aceptacion s7. El texto: " + palabraAAnalizar + " es un Signo de puntuacion");
+            trancisionesDelAutomata.addAll(0, transiciones);//le pasamos todas las transiciones generadas
+            return true;//si entra entonces devolvemos true
+        } else {//si no entonces devolvemos false
+            return false;
+        }
     }
 
     public boolean verSiEsOperador(String palabraAAnalizar) {
+        ArrayList<String> transiciones = new ArrayList<>();//en este guardaremos todas las transiciones
+        transiciones.add("Con el texto " + palabraAAnalizar);//damos cabecera
         String estado = "s1";
         String estadoAux = "";
         char charEnPosicionX;//esta variable almacenara el char que estemos analizando en el for
@@ -186,16 +226,24 @@ public class AnalizadorLexico {
             if (verificarSiCaracterPrteneceAAlfabetoDeOperador(charEnPosicionX)) {
                 estadoAux = estado;
                 estado = "s8";
-                //agregamos la transicion
+                transiciones.add("Con el caracter " + palabraAAnalizar.charAt(x) + " me movi del estado " + estadoAux + " al estado " + estado);
             }
         }
         if (contadorDeChars > 1) {//vamos que la palabra solo tenga 1 char
             return false;
         }
-        return (estado.equals("s8"));//mandamos el valor de verdad de esto
+        if (estado.equals("s8")) {//vemos si el estado es el estado de aceptacion
+            transiciones.add("Me encuentro en mi estado de aceptacion s8. El texto: " + palabraAAnalizar + " es un Operador");
+            trancisionesDelAutomata.addAll(0, transiciones);//le pasamos todas las transiciones generadas
+            return true;//si entra entonces devolvemos true
+        } else {//si no entonces devolvemos false
+            return false;
+        }
     }
 
     public boolean verSiEsAgrupacion(String palabraAAnalizar) {
+        ArrayList<String> transiciones = new ArrayList<>();//en este guardaremos todas las transiciones
+        transiciones.add("Con el texto " + palabraAAnalizar);//damos cabecera
         String estado = "s1";
         String estadoAux = "";
         char charEnPosicionX;//esta variable almacenara el char que estemos analizando en el for
@@ -206,13 +254,19 @@ public class AnalizadorLexico {
             if (verificarSiCaracterPrteneceAAlfabetoDeAgrupacion(charEnPosicionX)) {
                 estadoAux = estado;
                 estado = "s9";
-                //agregamos la transicion
+                transiciones.add("Con el caracter " + palabraAAnalizar.charAt(x) + " me movi del estado " + estadoAux + " al estado " + estado);
             }
         }
         if (contadorDeChars > 1) {//vamos que la palabra solo tenga 1 char
             return false;
         }
-        return (estado.equals("s9"));//mandamos el valor de verdad de esto
+        if (estado.equals("s9")) {//vemos si el estado es el estado de aceptacion
+            transiciones.add("Me encuentro en mi estado de aceptacion s9. El texto: " + palabraAAnalizar + " es un Signo de agrupacion");
+            trancisionesDelAutomata.addAll(0, transiciones);//le pasamos todas las transiciones generadas
+            return true;//si entra entonces devolvemos true
+        } else {//si no entonces devolvemos false
+            return false;
+        }
     }
 
     private boolean verificarSiCaracterPrteneceAAlfabetoDePuntuacion(char caracter) {

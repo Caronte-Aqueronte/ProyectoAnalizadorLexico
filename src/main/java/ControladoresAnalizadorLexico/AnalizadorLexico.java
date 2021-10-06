@@ -43,22 +43,16 @@ public class AnalizadorLexico {
                     //investigamos de que token se trata
                     if (verSiEsIdentificador(palabraAAnalizar)) {
                         tokens.add(new Token("Identificador", palabraAAnalizar, fila, columna));
-                        System.out.println("Identificador");
                     } else if (verSiEsNumero(palabraAAnalizar)) {
                         tokens.add(new Token("Numero", palabraAAnalizar, fila, columna));
-                        System.out.println("Numero");
                     } else if (verSiEsDecimal(palabraAAnalizar)) {
                         tokens.add(new Token("Decimal", palabraAAnalizar, fila, columna));
-                        System.out.println("Decimal");
                     } else if (verSiEsPuntuacion(palabraAAnalizar)) {
                         tokens.add(new Token("Signo de puntuacion", palabraAAnalizar, fila, columna));
-                        System.out.println("signo de puntuacion");
                     } else if (verSiEsOperador(palabraAAnalizar)) {
                         tokens.add(new Token("Operador", palabraAAnalizar, fila, columna));
-                        System.out.println("Operador");
                     } else if (verSiEsAgrupacion(palabraAAnalizar)) {
                         tokens.add(new Token("Signo de agrupacion", palabraAAnalizar, fila, columna));
-                        System.out.println("Signo de agrupacion");
                     } else {
                         errores.add(new Error(palabraAAnalizar, fila, columna));
                     }

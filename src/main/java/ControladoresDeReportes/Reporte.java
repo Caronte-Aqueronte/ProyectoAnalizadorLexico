@@ -107,21 +107,21 @@ public class Reporte {
         }
     }
     private ArrayList<Recuento> hacerRecuentoDeLexemas(){
-        ArrayList<Recuento> recuentos = new ArrayList<>();
-        boolean banderaLExemaExiste = false;
+        ArrayList<Recuento> recuento = new ArrayList<>();
+        boolean banderaLexemaExiste = false;
         for(Token itemToken : tokens){
-            banderaLExemaExiste = false;
-            for(Recuento itemRecuento : recuentos){
+            banderaLexemaExiste = false;
+            for(Recuento itemRecuento : recuento){
                 if(itemRecuento.getLexema().equals(itemToken.getLexema())){//vemos si se trata del mismo lexema
-                    banderaLExemaExiste = true;
+                    banderaLexemaExiste = true;
                     int vecesQueAparece = itemRecuento.getCantidadQueAparece();
                     itemRecuento.setCantidadQueAparece(vecesQueAparece + 1);
                 }
             }
-            if(banderaLExemaExiste == false){
-                recuentos.add(new Recuento(itemToken.getLexema(),itemToken.getTipoDeToken(), 1));
+            if(banderaLexemaExiste == false){
+                recuento.add(new Recuento(itemToken.getLexema(),itemToken.getTipoDeToken(), 1));
             }
         }
-        return recuentos;
+        return recuento;
     }
 }
